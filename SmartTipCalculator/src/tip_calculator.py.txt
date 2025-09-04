@@ -1,0 +1,74 @@
+def calculate_tip(bill_amount, tip_percentage, split_number=1):
+    """
+    Рассчитывает сумму чаевых и итоговую сумму к оплате.
+
+    Args:
+        bill_amount (float): Сумма счета.
+        tip_percentage (float): Процент чаевых (например, 15, 20).
+        split_number (int, optional): На сколько человек делить счет. По умолчанию 1.
+
+    Returns:
+        dict: Словарь с результатами расчета.
+    """
+    try:
+        # Преобразуем введенные данные в числа
+        bill = float(bill_amount)
+        tip_percent = float(tip_percentage)
+        split = int(split_number)
+
+        # Проверяем на положительные значения
+        if bill <= 0 or tip_percent <= 0 or split <= 0:
+            return {"error": "Все значения должны быть больше нуля."}
+
+        # Вычисляем сумму чаевых и общую сумму
+        tip_amount = bill * (tip_percent / 100)
+        total_amount = bill + tip_amount
+
+        # Вычисляем сумму с человека
+        amount_per_person = total_amount / split
+        tip_per_person = tip_amount / split
+
+        # Формируем и возвращаем результат
+        result = {
+            "total_bill": round(total_amount, 2),
+            "tip_amount": round(tip_amount, 2),
+            "amount_per_person": round(amount_per_person, 2),
+            "tip_per_person": round(tip_per_person, 2)
+        }
+        return result
+
+    except ValueError:
+        return {"error": "Пожалуйста, вводите только числовые значения."}
+
+
+def main():
+    """Основная функция для взаимодействия с пользователем."""
+    print("Добро пожаловать в Умный калькулятор чаевых!")
+    print("-------------------------------------------")
+
+    # Получаем данные от пользователя
+    bill = input("Введите сумму счета: ")
+    tip = input("Введите процент чаевых, который хотите оставить (например, 15): ")
+    split = input("На сколько человек нужно разделить счет? (Нажмите Enter, если только на себя): ")
+
+    # Если пользователь просто нажал Enter, делиться счет на 1 человека
+    if split == "":
+        split = 1
+
+    # Производим расчет
+    calculation = calculate_tip(bill, tip, split)
+
+    # Выводим результат или ошибку
+    if "error" in calculation:
+        print(f"\nОшибка: {calculation['error']}")
+    else:
+        print("\nРезультаты расчета:")
+        print(f"Общая сумма к оплате: ${calculation['total_bill']}")
+        print(f"Сумма чаевых: ${calculation['tip_amount']}")
+        if int(split) > 1:
+            print(f"С каждого человека: ${calculation['amount_per_person']} (включая чаевые ${calculation['tip_per_person']})")
+
+
+# Точка входа в программу
+if __name__ == "__main__":
+    main()
