@@ -1,7 +1,6 @@
 import sys
 import os
 
-# Добавляем папку src в путь, чтобы импортировать модуль
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 from tip_calculator import calculate_tip
@@ -30,3 +29,4 @@ if __name__ == "__main__":
     test_calculate_tip_split()
     test_calculate_tip_invalid_input()
     print("Все тесты прошли успешно!")
+
